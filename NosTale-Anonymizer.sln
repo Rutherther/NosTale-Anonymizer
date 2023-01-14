@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anonymizer", "src\Anonymizer\Anonymizer.csproj", "{75B72D93-62CA-4F45-A896-8B22FEA3BCB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anonymizer.CLI", "src\Anonymizer.CLI\Anonymizer.CLI.csproj", "{72C773D1-1438-40A3-AFC0-C1544A0B9802}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75B72D93-62CA-4F45-A896-8B22FEA3BCB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75B72D93-62CA-4F45-A896-8B22FEA3BCB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75B72D93-62CA-4F45-A896-8B22FEA3BCB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75B72D93-62CA-4F45-A896-8B22FEA3BCB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72C773D1-1438-40A3-AFC0-C1544A0B9802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72C773D1-1438-40A3-AFC0-C1544A0B9802}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72C773D1-1438-40A3-AFC0-C1544A0B9802}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C773D1-1438-40A3-AFC0-C1544A0B9802}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
