@@ -32,6 +32,11 @@ public class HeaderFilter : IFilter
         }
 
         var header = splitted[0];
+        if (_options.KeepHeaders is not null)
+        {
+            return _options.KeepHeaders.Contains(header);
+        }
+
         return !_options.RemoveHeaders.Contains(header);
     }
 }
