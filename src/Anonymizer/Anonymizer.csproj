@@ -9,8 +9,8 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
-      <PackageReference Include="NosSmooth.Packets" Version="3.3.1" />
-      <PackageReference Include="NosSmooth.PacketSerializer" Version="2.2.1" />
+      <PackageReference Include="NosSmooth.Packets" Version="3.3.3" />
+      <PackageReference Include="NosSmooth.PacketSerializer" Version="2.2.3" />
       <PackageReference Include="NosSmooth.PacketSerializer.Abstractions" Version="1.2.0" />
     </ItemGroup>
 
