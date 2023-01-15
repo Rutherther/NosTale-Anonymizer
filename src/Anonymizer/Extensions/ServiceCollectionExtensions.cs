@@ -10,6 +10,7 @@ using Anonymizer.Movers.Basic;
 using Microsoft.Extensions.DependencyInjection;
 using NosSmooth.Packets;
 using NosSmooth.Packets.Client;
+using NosSmooth.Packets.Client.Battle;
 using NosSmooth.Packets.Client.Inventory;
 using NosSmooth.Packets.Server.Battle;
 using NosSmooth.Packets.Server.Character;
@@ -41,6 +42,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<PacketProcessor>()
             .AddSingleton<IAnonymizer, DefaultAnonymizer>()
             .AddTransient<IFilter, HeaderFilter>()
+            .AddTransient<IFilter, MessageFilter>()
             .AddBasicMovers();
 
     /// <summary>
@@ -71,6 +73,14 @@ public static class ServiceCollectionExtensions
             .AddMover<StPacketMover, StPacket>()
             .AddMover<SuPacketMover, SuPacket>()
             .AddMover<TwkPacketMover, TwkPacket>()
+            .AddMover<AtPacketMover, AtPacket>()
+            .AddMover<EqPacketMover, EqPacket>()
+            .AddMover<NcifPacketMover, NcifPacket>()
+            .AddMover<RevivePacketMover, RevivePacket>()
+            .AddMover<TitinfoPacketMover, TitinfoPacket>()
+            .AddMover<UPetPacketMover, UsePetSkillPacket>()
+            .AddMover<UPPacketMover, UsePartnerSkillPacket>()
+            .AddMover<USPacketMover, UseSkillPacket>()
             .AddMover<CListPacketMover, CListPacket>();
 
     /// <summary>
