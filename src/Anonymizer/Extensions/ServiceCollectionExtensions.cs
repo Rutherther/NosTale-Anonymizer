@@ -69,6 +69,7 @@ public static class ServiceCollectionExtensions
             .AddMover<RaidPacketMover, RaidPacket>()
             .AddMover<RbossPacketMover, RbossPacket>()
             .AddMover<RdlstPacketMover, RdlstPacket>()
+            .AddMover<RdlstfPacketMover, RdlstfPacket>()
             .AddMover<SayPacketMover, SayPacket>()
             .AddMover<StPacketMover, StPacket>()
             .AddMover<SuPacketMover, SuPacket>()
