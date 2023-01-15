@@ -33,14 +33,39 @@ public static class Program
         return Parser.Default.ParseArguments<Options>(args)
             .MapResult
             (
-                options => MakeAsync
-                        (new FileInfo(options.Input), new FileInfo(options.Output), new FileInfo(options.Config))
-                    .GetAwaiter().GetResult(),
+                options =>
+                {
+                    var directoryInfo = new DirectoryInfo(options.Output);
+                    var fileInfo = new FileInfo(options.Output);
+                    if (Directory.Exists(options.Output))
+                    {
+                        fileInfo = null;
+                    }
+                    else
+                    {
+                        directoryInfo = null;
+                    }
+
+                    return MakeAsync
+                        (
+                            new FileInfo(options.Input),
+                            directoryInfo,
+                            fileInfo,
+                            new FileInfo(options.Config)
+                        )
+                        .GetAwaiter().GetResult();
+                },
                 _ => 1
             );
     }
 
-    private static async Task<int> MakeAsync(FileInfo input, FileInfo output, FileInfo config)
+    private static async Task<int> MakeAsync
+    (
+        FileInfo input,
+        DirectoryInfo? outputDirectory,
+        FileInfo? outputFile,
+        FileInfo config
+    )
     {
         if (!input.Exists)
         {
@@ -48,7 +73,12 @@ public static class Program
             return 1;
         }
 
-        if (output.Exists)
+        if (outputFile is null)
+        {
+            outputFile = new FileInfo(Path.Join(outputDirectory!.FullName, input.Name));
+        }
+
+        if (outputFile.Exists)
         {
             Console.Error.WriteLine("The output file already exists.");
             return 1;
@@ -76,7 +106,7 @@ public static class Program
         using var fileSink = new FileSink
         (
             input.FullName,
-            output.FullName,
+            outputFile.FullName,
             services.GetRequiredService<IOptions<FileSinkOptions>>().Value
         );
 
