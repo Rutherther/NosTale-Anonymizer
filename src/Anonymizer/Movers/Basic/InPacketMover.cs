@@ -17,7 +17,7 @@ public class InPacketMover : AbstractMover<InPacket>
     {
         return packet with
         {
-            EntityId = packet.EntityId,
+            EntityId = anonymizer.AnonymizeId(packet.EntityId),
             Name = packet.Name is null ? null : (NameString)anonymizer.AnonymizeName(packet.Name),
             PlayerSubPacket = packet.PlayerSubPacket is null
                 ? null
@@ -39,6 +39,23 @@ public class InPacketMover : AbstractMover<InPacket>
                                     (packet.PlayerSubPacket.FamilySubPacket.Value.FamilyId)
                             }
                     }
+                },
+            NonPlayerSubPacket = packet.NonPlayerSubPacket is null
+                ? null
+                : packet.NonPlayerSubPacket with
+                {
+                    OwnerId = packet.NonPlayerSubPacket.OwnerId is null
+                        ? null
+                        : anonymizer.AnonymizeId(packet.NonPlayerSubPacket.OwnerId.Value),
+                    Name = packet.NonPlayerSubPacket.Name is null
+                        ? null
+                        : (NameString)anonymizer.AnonymizeName(packet.NonPlayerSubPacket.Name)
+                },
+            ItemSubPacket = packet.ItemSubPacket is null
+                ? null
+                : packet.ItemSubPacket with
+                {
+                    OwnerId = anonymizer.AnonymizeId(packet.ItemSubPacket.OwnerId)
                 }
         };
     }

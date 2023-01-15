@@ -14,9 +14,10 @@ namespace Anonymizer.Sinks;
 /// </summary>
 public class FileSink : IDisposable, IPacketSource, IPacketDestination
 {
+    private readonly Regex _regex;
     private readonly FileSinkOptions _options;
-    private readonly FileStream _sourceStream;
-    private readonly FileStream _destinationStream;
+    private readonly StreamReader _reader;
+    private readonly StreamWriter _writer;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FileSink"/> class.
@@ -26,30 +27,61 @@ public class FileSink : IDisposable, IPacketSource, IPacketDestination
     /// <param name="options">The options.</param>
     public FileSink(string sourceFile, string destinationFile, FileSinkOptions options)
     {
+        _regex = new Regex(options.LineRegex);
         _options = options;
-        _sourceStream = File.OpenRead(sourceFile);
-        _destinationStream = File.OpenWrite(destinationFile);
+
+        _reader = new StreamReader(File.OpenRead(sourceFile));
+        _writer = new StreamWriter(File.OpenWrite(destinationFile));
     }
 
     /// <inheritdoc />
     public long Cursor { get; private set; }
 
     /// <inheritdoc />
-    public Task<bool> TryGetNextPacketAsync(out PacketInfo packetInfo, CancellationToken ct = default)
+    public async Task<PacketInfo?> TryGetNextPacketAsync(CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        if (_reader.EndOfStream)
+        {
+            return null;
+        }
+
+        var line = await _reader.ReadLineAsync(ct);
+        if (string.IsNullOrEmpty(line))
+        {
+            return null;
+        }
+
+        Cursor++;
+
+        var match = _regex.Match(line);
+        if (!match.Success)
+        {
+            Console.Error.WriteLine($"Could not find match on line {line}");
+            return new PacketInfo(PacketSource.Client, string.Empty);
+        }
+
+        var type = match.Groups[1].Value;
+        var packetStr = match.Groups[2].Value;
+        var source = type == _options.RecvString ? PacketSource.Server : PacketSource.Client;
+
+        return new PacketInfo(source, packetStr);
     }
 
     /// <inheritdoc />
-    public Task WritePacketAsync(string packetString)
+    public async Task WritePacketAsync(PacketInfo packet, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var output = _options.OutputFormat
+            .Replace("%TYPE%", packet.Source == PacketSource.Client ? _options.SendString : _options.RecvString)
+            .Replace("%PACKET%", packet.Packet);
+
+        await _writer.WriteLineAsync(new ReadOnlyMemory<char>(output.ToCharArray()), ct);
+        await _writer.FlushAsync();
     }
 
     /// <inheritdoc />
     public void Dispose()
     {
-        _sourceStream.Dispose();
-        _destinationStream.Dispose();
+        _writer.Dispose();
+        _reader.Dispose();
     }
 }

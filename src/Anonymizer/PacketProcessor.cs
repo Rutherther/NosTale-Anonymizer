@@ -103,22 +103,38 @@ public class PacketProcessor
     /// <param name="destination">The destination to put processed packets into.</param>
     /// <param name="ct">The cancellation token for cancelling the operation.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public async Task<Result> ProcessSourceDestination(IPacketSource source, IPacketDestination destination, CancellationToken ct = default)
+    public async Task<Result> ProcessSourceDestination
+        (IPacketSource source, IPacketDestination destination, CancellationToken ct = default)
     {
-        while (await source.TryGetNextPacketAsync(out var packet, ct))
+        var errors = new List<IResult>();
+        PacketInfo? packetInfo;
+        while ((packetInfo = await source.TryGetNextPacketAsync(ct)) != null)
         {
-            var processedPacketResult = ProcessPacket(packet!);
+            var processedPacketResult = ProcessPacket(packetInfo);
             if (!processedPacketResult.IsDefined(out var processedPacket))
             {
-                return Result.FromError(processedPacketResult);
+                errors.Add(Result.FromError(processedPacketResult));
+                continue;
             }
 
             if (processedPacket.Keep)
             {
-                await destination.WritePacketAsync(processedPacket.NewPacketString);
+                await destination.WritePacketAsync
+                (
+                    packetInfo with
+                    {
+                        Packet = processedPacket.NewPacketString
+                    },
+                    ct
+                );
             }
         }
 
-        return Result.FromSuccess();
+        return errors.Count switch
+        {
+            0 => Result.FromSuccess(),
+            1 => (Result)errors[0],
+            _ => new AggregateError(errors)
+        };
     }
 }

@@ -16,7 +16,8 @@ public class CInfoPacketMover : AbstractMover<CInfoPacket>
         => packet with
         {
             CharacterId = anonymizer.AnonymizeId(packet.CharacterId),
-            FamilyId = packet.FamilyId is null ? null : anonymizer.AnonymizeId(long.Parse(packet.FamilyId)).ToString(),
+            Name = anonymizer.AnonymizeName(packet.Name),
+            FamilyId = packet.FamilyId is null ? null : anonymizer.AnonymizeName(packet.FamilyId),
             FamilyName = packet.FamilyName is null ? null : anonymizer.AnonymizeName(packet.FamilyName),
             GroupId = packet.GroupId is null ? null : anonymizer.AnonymizeId(packet.GroupId.Value)
         };

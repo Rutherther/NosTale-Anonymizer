@@ -24,8 +24,7 @@ public interface IPacketSource
     /// <remarks>
     /// Moves the cursor.
     /// </remarks>
-    /// <param name="packetInfo">The information about next packet.</param>
     /// <param name="ct">The cancellation token used for cancelling the operation.</param>
-    /// <returns>Whether next packet was loaded and cursor moved. If false, there are no more packets.</returns>
-    public Task<bool> TryGetNextPacketAsync([NotNullWhen(true)] out PacketInfo? packetInfo, CancellationToken ct = default);
+    /// <returns>Null if no more packets are present.</returns>
+    public Task<PacketInfo?> TryGetNextPacketAsync(CancellationToken ct = default);
 }

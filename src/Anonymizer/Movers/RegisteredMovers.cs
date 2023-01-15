@@ -36,11 +36,14 @@ public class RegisteredMovers
     public void AddMover<TPacket>()
         where TPacket : IPacket
     {
-        var header = typeof(TPacket).GetCustomAttribute<PacketHeaderAttribute>();
+        var headers = typeof(TPacket).GetCustomAttributes<PacketHeaderAttribute>();
 
-        if (header?.Identifier is not null)
+        foreach (var header in headers)
         {
-            _packetHeaders.Add(header.Identifier);
+            if (header.Identifier is not null)
+            {
+                _packetHeaders.Add(header.Identifier);
+            }
         }
     }
 
