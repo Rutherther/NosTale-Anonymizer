@@ -35,7 +35,7 @@ public class InPacketMover : AbstractMover<InPacket>
                             ? null
                             : packet.PlayerSubPacket.FamilySubPacket.Value with
                             {
-                                FamilyId = anonymizer.AnonymizeName
+                                FamilyId = anonymizer.AnonymizeId
                                     (packet.PlayerSubPacket.FamilySubPacket.Value.FamilyId)
                             }
                     }

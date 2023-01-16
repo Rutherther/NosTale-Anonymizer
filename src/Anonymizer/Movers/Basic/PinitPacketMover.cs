@@ -17,7 +17,7 @@ public class PinitPacketMover : AbstractMover<PinitPacket>
     {
         return packet with
         {
-            PinitSubPackets = packet.PinitSubPackets?.Select
+            PinitSubPackets = packet.PinitSubPackets.Select
             (
                 x => x with
                 {

@@ -12,7 +12,10 @@ using NosSmooth.Packets;
 using NosSmooth.Packets.Client;
 using NosSmooth.Packets.Client.Battle;
 using NosSmooth.Packets.Client.Inventory;
+using NosSmooth.Packets.Client.Mates;
 using NosSmooth.Packets.Server.Battle;
+using NosSmooth.Packets.Server.Buffs;
+using NosSmooth.Packets.Server.Buffs.Generated;
 using NosSmooth.Packets.Server.Character;
 using NosSmooth.Packets.Server.Chat;
 using NosSmooth.Packets.Server.Entities;
@@ -21,6 +24,7 @@ using NosSmooth.Packets.Server.Groups;
 using NosSmooth.Packets.Server.Inventory;
 using NosSmooth.Packets.Server.Login;
 using NosSmooth.Packets.Server.Maps;
+using NosSmooth.Packets.Server.Mates;
 using NosSmooth.Packets.Server.Raids;
 using NosSmooth.Packets.Server.UI;
 
@@ -53,6 +57,25 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddBasicMovers(this IServiceCollection serviceCollection)
         => serviceCollection
             .AddMover<BsPacketMover, BsPacket>()
+            .AddMover<BfEPacketMover, BfEPacket>()
+            .AddMover<CtPacketMover, CtPacket>()
+            .AddMover<DmPacketMover, DmPacket>()
+            .AddMover<RcPacketMover, RcPacket>()
+            .AddMover<BfPacketMover, BfPacket>()
+            .AddMover<SayiPacketMover, SayiPacket>()
+            .AddMover<SayitemtPacketMover, SayitemtPacket>()
+            .AddMover<SaytPacketMover, SaytPacket>()
+            .AddMover<SpkPacketMover, SpkPacket>()
+            .AddMover<RestPacketMover, RestPacket>()
+            .AddMover<RaidfhpPacketMover, RaidfhpPacket>()
+            .AddMover<RaidfmpPacketMover, RaidfmpPacket>()
+            .AddMover<CtlPacketMover, CtlPacket>()
+            .AddMover<SuctlPacketMover, SuctlPacket>()
+            .AddMover<PtctlPacketMover, PtctlPacket>()
+            .AddMover<ThrowPacketMover, ThrowPacket>()
+            .AddMover<TpPacketMover, TpPacket>()
+            .AddMover<CharScPacketMover, CharScPacket>()
+            .AddMover<DiePacketMover, DiePacket>()
             .AddMover<CInfoPacketMover, CInfoPacket>()
             .AddMover<CModePacketMover, CModePacket>()
             .AddMover<CondPacketMover, CondPacket>()

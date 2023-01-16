@@ -82,18 +82,17 @@ public class PacketProcessor
         {
             if (mover.ShouldHandle(packet))
             {
-                var movedPacket = mover.Move(_anonymizer, packet);
-                var serializedResult = _packetSerializer.Serialize(movedPacket);
-                if (!serializedResult.IsDefined(out var serialized))
-                {
-                    return Result<ProcessedPacket>.FromError(serializedResult);
-                }
-
-                return new ProcessedPacket(packetInfo.Packet, serialized, true);
+                packet = mover.Move(_anonymizer, packet);
             }
         }
 
-        return new ProcessedPacket(packetInfo.Packet, packetInfo.Packet, true);
+        var serializedResult = _packetSerializer.Serialize(packet);
+        if (!serializedResult.IsDefined(out var serialized))
+        {
+            return Result<ProcessedPacket>.FromError(serializedResult);
+        }
+
+        return new ProcessedPacket(packetInfo.Packet, serialized, true);
     }
 
     /// <summary>

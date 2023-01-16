@@ -5,6 +5,8 @@
 //  Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using NosSmooth.Packets.Server.Character;
+using NosSmooth.PacketSerializer.Abstractions;
+using NosSmooth.PacketSerializer.Abstractions.Common;
 
 namespace Anonymizer.Movers.Basic;
 
@@ -17,8 +19,14 @@ public class CInfoPacketMover : AbstractMover<CInfoPacket>
         {
             CharacterId = anonymizer.AnonymizeId(packet.CharacterId),
             Name = anonymizer.AnonymizeName(packet.Name),
-            FamilyId = packet.FamilyId is null ? null : anonymizer.AnonymizeName(packet.FamilyId),
-            FamilyName = packet.FamilyName is null ? null : anonymizer.AnonymizeName(packet.FamilyName),
+            FamilySubPacket = packet.FamilySubPacket.Value is null ? null : packet.FamilySubPacket with
+            {
+                Value = packet.FamilySubPacket.Value with
+                {
+                    FamilyId = anonymizer.AnonymizeId(packet.FamilySubPacket.Value.FamilyId)
+                }
+            },
+            FamilyName = anonymizer.AnonymizeName(packet.FamilyName),
             GroupId = packet.GroupId is null ? null : anonymizer.AnonymizeId(packet.GroupId.Value)
         };
 }

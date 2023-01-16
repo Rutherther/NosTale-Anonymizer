@@ -20,32 +20,23 @@ public class HeaderFilterOptions
         "stat",
         "say",
         "spk",
+        "infoi",
+        "msgi",
+        "sayi",
+        "sayi2",
+        "sayitemt",
+        "sayit",
+        "sayit2",
         "bn",
         "inv",
-
         "qslot",
         "umi",
         "msgi2",
         "qnai2",
-
-        "die",
-
-        "throw",
-
-        "bf",
-        "bf_e",
-        "dm",
-        "finit",
-        "finfo",
-        "ptctl",
-        "suctl", // figure out what it does
-        "ct", // figure out what it does
     };
 
     /// <summary>
     /// Gets or sets the headers to keep. Takes priority before remove headers.
     /// </summary>
     public IReadOnlyList<string>? KeepHeaders { get; set; } = null;
-
-    // rdlst, raid, raidmbf, raidbf, in, out, c_info, c_mode
 }

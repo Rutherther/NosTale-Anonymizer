@@ -22,7 +22,7 @@ public class GidxPacketMover : AbstractMover<GidxPacket>
             {
                 Value = packet.FamilySubPacket.Value is null ? null : packet.FamilySubPacket.Value with
                 {
-                    FamilyId = anonymizer.AnonymizeName(packet.FamilySubPacket.Value.FamilyId)
+                    FamilyId = anonymizer.AnonymizeId(packet.FamilySubPacket.Value.FamilyId)
                 }
             }
         };
